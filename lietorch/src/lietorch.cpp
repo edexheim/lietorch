@@ -2,7 +2,7 @@
 #include <vector>
 #include "lietorch_gpu.h"
 #include "lietorch_cpu.h"
-
+#include <c10/cuda/CUDAGuard.h>
 
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), #x " must be contiguous")
 
@@ -21,6 +21,7 @@ torch::Tensor expm(int group_index, torch::Tensor a) {
         return exp_forward_cpu(group_index, a);
 
     } else if (a.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(a));
         return exp_forward_gpu(group_index, a);
     }
 
@@ -34,6 +35,7 @@ std::vector<torch::Tensor> expm_backward(int group_index, torch::Tensor grad, to
         return exp_backward_cpu(group_index, grad, a);
 
     } else if (a.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(a));
         return exp_backward_gpu(group_index, grad, a);
     }
 
@@ -46,6 +48,7 @@ torch::Tensor logm(int group_index, torch::Tensor X) {
         return log_forward_cpu(group_index, X);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return log_forward_gpu(group_index, X);
     }
 
@@ -60,6 +63,7 @@ std::vector<torch::Tensor> logm_backward(int group_index, torch::Tensor grad, to
         return log_backward_cpu(group_index, grad, X);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return log_backward_gpu(group_index, grad, X);
     }
 
@@ -72,6 +76,7 @@ torch::Tensor inv(int group_index, torch::Tensor X) {
     if (X.device().type() == torch::DeviceType::CPU) {
         return inv_forward_cpu(group_index, X);
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return inv_forward_gpu(group_index, X);
     }
 
@@ -86,6 +91,7 @@ std::vector<torch::Tensor> inv_backward(int group_index, torch::Tensor grad, tor
         return inv_backward_cpu(group_index, grad, X);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return inv_backward_gpu(group_index, grad, X);
     }
 
@@ -102,6 +108,7 @@ torch::Tensor mul(int group_index, torch::Tensor X, torch::Tensor Y) {
         return mul_forward_cpu(group_index, X, Y);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return mul_forward_gpu(group_index, X, Y);
     }
 
@@ -117,6 +124,7 @@ std::vector<torch::Tensor> mul_backward(int group_index, torch::Tensor grad, tor
         return mul_backward_cpu(group_index, grad, X, Y);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return mul_backward_gpu(group_index, grad, X, Y);
     }
 
@@ -131,6 +139,7 @@ torch::Tensor adj(int group_index, torch::Tensor X, torch::Tensor a) {
         return adj_forward_cpu(group_index, X, a);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return adj_forward_gpu(group_index, X, a);
     }
 
@@ -146,6 +155,7 @@ std::vector<torch::Tensor> adj_backward(int group_index, torch::Tensor grad, tor
         return adj_backward_cpu(group_index, grad, X, a);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return adj_backward_gpu(group_index, grad, X, a);
     }
 
@@ -160,6 +170,7 @@ torch::Tensor adjT(int group_index, torch::Tensor X, torch::Tensor a) {
         return adjT_forward_cpu(group_index, X, a);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return adjT_forward_gpu(group_index, X, a);
     }
 
@@ -175,6 +186,7 @@ std::vector<torch::Tensor> adjT_backward(int group_index, torch::Tensor grad, to
         return adjT_backward_cpu(group_index, grad, X, a);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return adjT_backward_gpu(group_index, grad, X, a);
     }
 
@@ -190,6 +202,7 @@ torch::Tensor act(int group_index, torch::Tensor X, torch::Tensor p) {
         return act_forward_cpu(group_index, X, p);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return act_forward_gpu(group_index, X, p);
     }
 
@@ -205,6 +218,7 @@ std::vector<torch::Tensor> act_backward(int group_index, torch::Tensor grad, tor
         return act_backward_cpu(group_index, grad, X, p);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return act_backward_gpu(group_index, grad, X, p);
     }
 
@@ -219,6 +233,7 @@ torch::Tensor act4(int group_index, torch::Tensor X, torch::Tensor p) {
         return act4_forward_cpu(group_index, X, p);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return act4_forward_gpu(group_index, X, p);
     }
 
@@ -234,6 +249,7 @@ std::vector<torch::Tensor> act4_backward(int group_index, torch::Tensor grad, to
         return act4_backward_cpu(group_index, grad, X, p);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return act4_backward_gpu(group_index, grad, X, p);
     }
 
@@ -248,6 +264,7 @@ torch::Tensor projector(int group_index, torch::Tensor X) {
         return orthogonal_projector_cpu(group_index, X);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return orthogonal_projector_gpu(group_index, X);
     }
 
@@ -262,6 +279,7 @@ torch::Tensor as_matrix(int group_index, torch::Tensor X) {
         return as_matrix_forward_cpu(group_index, X);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return as_matrix_forward_gpu(group_index, X);
     }
 
@@ -276,6 +294,7 @@ torch::Tensor Jinv(int group_index, torch::Tensor X, torch::Tensor a) {
         return jleft_forward_cpu(group_index, X, a);
 
     } else if (X.device().type() == torch::DeviceType::CUDA) {
+        const at::cuda::OptionalCUDAGuard device_guard(device_of(X));
         return jleft_forward_gpu(group_index, X, a);
     }
 
